@@ -12,7 +12,7 @@ class AuthController extends Controller
     public function authenticate(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'username' => 'required|string',
+            'email' => 'required|string',
             'password' => 'required|string',
         ]);
 
@@ -20,13 +20,13 @@ class AuthController extends Controller
             return response()->json($validator->errors(), 422);
         }
 
-        $credentials = $request->only('username', 'password');
+        $credentials = $request->only('email', 'password');
 
         if (!$token = JWTAuth::attempt($credentials)) {
             \Log::error('Login failed', ['credentials' => $credentials]);
             return response()->json([
                 'success' => false,
-                'message' => 'Username atau Password Salah',
+                'message' => 'Email atau Password Salah',
             ], 401);
         }
 
